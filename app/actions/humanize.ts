@@ -1,13 +1,11 @@
 "use server";
 
-import OpenAI from "openai";
-
 export type HumanizeActionState = {
   output: string;
   error?: string;
 };
 
-const MODEL = process.env.OPENAI_MODEL || "gpt-4.1-nano-2025-04-14";
+const MODEL = process.env.OPENROUTER_MODEL || "openai/gpt-4o-mini";
 
 function buildPrompt(options: {
   targetTone: string;
@@ -58,11 +56,11 @@ Guidelines:
 }
 
 export async function humanizeAction(prevState: HumanizeActionState, formData: FormData): Promise<HumanizeActionState> {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) {
     return {
       output: "",
-      error: "Missing OPENAI_API_KEY. Set it in .env.local and restart the server.",
+      error: "Missing OPENROUTER_API_KEY. Set it in .env.local and restart the server.",
     };
   }
 
@@ -79,8 +77,6 @@ export async function humanizeAction(prevState: HumanizeActionState, formData: F
   const targetTone = String(formData.get("targetTone") || "neutral");
   const strength = String(formData.get("strength") || "medium") as "light" | "medium" | "strong";
 
-  const openai = new OpenAI({ apiKey });
-
   try {
     const system = buildPrompt({
       targetTone,
@@ -92,15 +88,35 @@ export async function humanizeAction(prevState: HumanizeActionState, formData: F
       strength,
     });
 
-    const response = await openai.responses.create({
-      model: MODEL,
-      temperature: 0.4,
-      max_output_tokens: 2000,
-      instructions: system,
-      input: text,
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+        "X-Title": "Sing Removal",
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        temperature: 0.4,
+        max_tokens: 2000,
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: text },
+        ],
+      }),
+      cache: "no-store",
     });
 
-    const output = (response as any).output_text?.trim?.();
+    if (!res.ok) {
+      const errText = await res.text();
+      return {
+        output: "",
+        error: `OpenRouter error (${res.status}): ${errText.slice(0, 300)}`,
+      };
+    }
+
+    const data: any = await res.json();
+    const output = data?.choices?.[0]?.message?.content?.trim?.();
     if (!output) {
       return {
         output: "",
