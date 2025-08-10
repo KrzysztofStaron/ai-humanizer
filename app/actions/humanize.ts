@@ -38,6 +38,14 @@ function buildPrompt(options: {
       : "Avoid overly formal, template-like transitions.",
     "Preserve original meaning, facts, and intent. Do not invent details.",
     "Keep formatting and markdown if present. Keep code blocks unchanged unless asked.",
+    "Don't use hashtags, retorical questions, asking questions and giving instant answers in the same sentence",
+    "Don't use emojis",
+    "Don't use em dashes",
+    "Don't use buzzwords and boilerplate",
+    "Don't use clichés and canned transitions",
+    "Don't use overly formal, template-like transitions",
+    "Don't use robotic cadence",
+    "Don't use hashtags, retorical questions, asking questions and giving instant answers in the same sentence",
   ];
 
   const strengthRule =
