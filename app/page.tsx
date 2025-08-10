@@ -307,19 +307,6 @@ export default function Home() {
               </CardContent>
             </Card>
           )}
-
-          {/* Setup Instructions */}
-          <Card className="border-zinc-200 bg-zinc-50">
-            <CardContent className="pt-6">
-              <div className="text-sm text-zinc-600">
-                <strong className="text-zinc-900">Setup:</strong> Add your{" "}
-                <code className="bg-zinc-200 px-1 py-0.5 rounded text-zinc-800">OPENROUTER_API_KEY</code> to{" "}
-                <code className="bg-zinc-200 px-1 py-0.5 rounded text-zinc-800">.env.local</code> to enable AI features.
-                Optionally set <code className="bg-zinc-200 px-1 py-0.5 rounded text-zinc-800">OPENROUTER_MODEL</code>{" "}
-                (defaults to openai/gpt-4o-mini).
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </main>
     </div>
