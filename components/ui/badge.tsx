@@ -9,10 +9,10 @@ export function Badge({
 }: React.HTMLAttributes<HTMLSpanElement> & { variant?: BadgeVariant }) {
   const color =
     variant === "secondary"
-      ? "bg-gray-100 text-black"
+      ? "bg-zinc-100 text-zinc-900"
       : variant === "destructive"
       ? "bg-red-100 text-red-700"
-      : "bg-black text-white";
+      : "bg-zinc-900 text-white";
   return (
     <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${color} ${className}`}>
       {children}

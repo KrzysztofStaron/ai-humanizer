@@ -7,7 +7,7 @@ export function toast({ title, description }: { title: string; description?: str
     el.setAttribute("role", "status");
     el.setAttribute("aria-live", "polite");
     el.className =
-      "fixed bottom-4 left-1/2 -translate-x-1/2 rounded-md bg-black text-white px-4 py-2 text-sm shadow-lg z-50";
+      "fixed bottom-4 left-1/2 -translate-x-1/2 rounded-md bg-zinc-900 text-white px-4 py-2 text-sm shadow-lg z-50";
     el.textContent = description ? `${title} — ${description}` : title;
     document.body.appendChild(el);
     setTimeout(() => {

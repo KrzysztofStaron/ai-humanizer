@@ -17,8 +17,8 @@ export function Switch({ checked, onCheckedChange, disabled, className = "" }: S
       aria-checked={checked}
       onClick={() => !disabled && onCheckedChange(!checked)}
       disabled={disabled}
-      className={`relative inline-flex h-6 w-10 items-center rounded-full border border-black/10 transition ${
-        checked ? "bg-black" : "bg-gray-200"
+      className={`relative inline-flex h-6 w-10 items-center rounded-full border border-zinc-300 transition ${
+        checked ? "bg-zinc-900" : "bg-zinc-200"
       } disabled:opacity-50 ${className}`}
     >
       <span

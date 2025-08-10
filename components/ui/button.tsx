@@ -11,13 +11,13 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 function getVariantClasses(variant: ButtonVariant): string {
   switch (variant) {
     case "outline":
-      return "border border-black/10 bg-white text-black hover:bg-black/5";
+      return "border border-zinc-300 bg-white text-zinc-700 hover:bg-zinc-50";
     case "hero":
-      return "bg-black text-white hover:bg-black/90";
+      return "bg-zinc-900 text-white hover:bg-zinc-800";
     case "secondary":
-      return "bg-gray-100 text-black hover:bg-gray-200";
+      return "bg-zinc-100 text-zinc-900 hover:bg-zinc-200";
     default:
-      return "bg-black text-white hover:bg-black/90";
+      return "bg-zinc-900 text-white hover:bg-zinc-800";
   }
 }
 
