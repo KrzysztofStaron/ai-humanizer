@@ -19,33 +19,59 @@ function buildPrompt(options: {
   const { targetTone, removeEmojis, limitEmDashes, reduceBuzzwords, varySentenceLength, simplifyCliches, strength } =
     options;
 
+  // Common AI overused phrases that should be avoided or replaced
+  const aiOverusedPhrases = [
+    "provide a valuable insight",
+    "left an indelible mark",
+    "play a significant role in shaping",
+    "an unwavering commitment",
+    "open a new avenue",
+    "a stark reminder",
+    "play a crucial role in determining",
+    "finding a contribution",
+    "crucial role in understanding",
+    "finding a shed light",
+    "tapestry",
+    "embark",
+    "vibrant landscape",
+    "delve into",
+    "dive deep",
+    "comprehensive",
+    "seamless",
+    "game-changer",
+    "cutting-edge",
+    "innovative solution",
+  ];
+
   const constraints: string[] = [
-    `Tone: ${targetTone}`,
+    `Adopt a ${targetTone} tone and tailor the voice to sound natural and engaging.`,
     removeEmojis
-      ? "Remove emojis unless clearly purposeful."
-      : "Keep emojis if they contribute meaning; do not add new ones.",
+      ? "Remove all emojis unless they are essential for meaning."
+      : "Keep only meaningful emojis; do not add new ones.",
     limitEmDashes
-      ? "Limit em dashes; prefer commas, periods, or parentheses sparingly."
+      ? "Limit the use of em dashes; prefer commas, periods, or parentheses for clarity."
       : "Use em dashes only when they genuinely improve readability.",
     reduceBuzzwords
-      ? "Avoid buzzwords and boilerplate; use precise, concrete language."
-      : "Avoid jargon unless domain-specific and necessary.",
+      ? `Eliminate buzzwords, boilerplate, and overused AI phrases. Specifically avoid: ${aiOverusedPhrases
+          .slice(0, 10)
+          .join(", ")}. Use specific, concrete language instead.`
+      : "Avoid jargon unless it is necessary for the topic or audience.",
     varySentenceLength
-      ? "Vary sentence length and rhythm; avoid repetitive structures."
-      : "Maintain natural flow; avoid robotic cadence.",
+      ? "Vary sentence length and structure significantly to avoid repetitive or formulaic patterns. Mix short punchy sentences with longer, complex ones to create natural rhythm."
+      : "Maintain a natural flow and avoid robotic or monotonous cadence.",
     simplifyCliches
-      ? "Replace clichés and canned transitions with direct phrasing."
-      : "Avoid overly formal, template-like transitions.",
-    "Preserve original meaning, facts, and intent. Do not invent details.",
-    "Keep formatting and markdown if present. Keep code blocks unchanged unless asked.",
-    "Don't use hashtags, retorical questions, asking questions and giving instant answers in the same sentence",
-    "Don't use emojis",
-    "Don't use em dashes",
-    "Don't use buzzwords and boilerplate",
-    "Don't use clichés and canned transitions",
-    "Don't use overly formal, template-like transitions",
-    "Don't use robotic cadence",
-    "Don't use hashtags, retorical questions, asking questions and giving instant answers in the same sentence",
+      ? "Replace clichés and canned transitions with direct, original phrasing. Avoid generic metaphors and overused comparisons."
+      : "Avoid overly formal or template-like transitions.",
+    "Fact-check all claims and avoid making unsupported or generic statements. Replace vague expert-sounding claims with specific, verifiable information.",
+    "Be specific and use rich, descriptive words instead of vague or generic language. Avoid empty statements that sound authoritative but lack substance.",
+    "Favor active voice over passive voice and use first-person perspective when appropriate to increase engagement and authenticity.",
+    "Incorporate storytelling elements, personal anecdotes, or concrete examples to make the content more relatable and emotionally engaging.",
+    "Replace formulaic third-person descriptions with conversational, engaging language that speaks directly to the reader.",
+    "Add authentic emotion and genuine insight rather than just listing facts or information.",
+    "Use casual, conversational language that connects with the audience rather than overly formal or academic tone.",
+    "Preserve the original meaning, facts, and intent. Do not invent or alter factual details.",
+    "Keep formatting and markdown if present. Leave code blocks unchanged unless explicitly instructed.",
+    "Do not use hashtags, rhetorical questions, or answer questions immediately after asking them in the same sentence.",
   ];
 
   const strengthRule =
@@ -55,11 +81,20 @@ function buildPrompt(options: {
       ? "Rewrite for human voice while preserving author style where possible."
       : "Substantial rewrite for natural, human voice; keep all facts intact.";
 
-  return `Rewrite the user's text to read like natural human writing.
+  return `Rewrite the user's text to read like natural human writing that demonstrates expertise, experience, authoritativeness, and trustworthiness (E-E-A-T). Transform formulaic AI content into engaging, authentic human communication.
+
+Key Strategies for Humanization:
+1. Sentence Structure: Vary sentence length dramatically - mix short, punchy statements with longer, flowing sentences to create natural rhythm
+2. Voice & Perspective: Use active voice and first-person when appropriate; avoid monotonous third-person descriptions
+3. Storytelling: Incorporate narrative elements, concrete examples, and personal insights to create emotional connection
+4. Authenticity: Replace generic expert-sounding phrases with specific, nuanced analysis that shows deep understanding
+5. Engagement: Write conversationally, as if speaking directly to the reader, not delivering a formal presentation
 
 Guidelines:
 - ${constraints.join("\n- ")}
 - ${strengthRule}
+- Replace AI "hallmark phrases" with original, human expressions that convey the same meaning more naturally
+- Ensure the rewritten content demonstrates genuine expertise rather than surface-level knowledge
 - Do not add disclaimers. Output only the rewritten text, nothing else.`;
 }
 
